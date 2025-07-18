@@ -2,6 +2,7 @@ import { Component, inject, NgModule } from '@angular/core';
 import { IUserModel, User } from '../../model/user.model';
 import { UserService } from '../../services/user.service';
 import {FormsModule} from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import {FormsModule} from '@angular/forms';
 export class LoginComponent {
 
   loginObj:User = new User();
-
+  router = inject(Router);
   userSrv = inject(UserService);
 
 
@@ -20,6 +21,8 @@ export class LoginComponent {
     this.userSrv.loginUser(this.loginObj).subscribe({
       next:(res:IUserModel)=>{
         alert("User logged");
+        localStorage.setItem("user",JSON.stringify(res));
+        this.router.navigateByUrl("/dashboard");
       },
       error:(error)=>{
         alert("User login failed");
