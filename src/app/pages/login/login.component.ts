@@ -22,6 +22,7 @@ export class LoginComponent {
       next:(res:IUserModel)=>{
         alert("User logged");
         localStorage.setItem("user",JSON.stringify(res));
+        this.userSrv.loggedUserData = res;
         this.router.navigateByUrl("/dashboard");
       },
       error:(error)=>{

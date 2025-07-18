@@ -14,9 +14,12 @@
                             Reports</a></li>
                 </ul>
                 <div class="d-flex align-items-center">
-                    <div class="operator-info me-3 d-none d-md-block"><span id="operatorRoleBadge"
-                            class="badge bg-light text-primary me-2">Entry Operator</span><span
-                            id="operatorName">sam-01</span></div>
+                    <div class="operator-info me-3 d-none d-md-block">
+                        <span id="operatorRoleBadge"
+                            class="badge bg-light text-primary me-2">Entry Operator
+                        </span>
+                        <span id="operatorName">{{userSrv.loggedUserData.emailId}}</span>
+                    </div>
                     <div class="dropdown"><a href="#" class="btn btn-warning"><i class="bi bi-box-arrow-right me-2"></i>
                             Logout</a></div>
                 </div>
@@ -24,4 +27,4 @@
         </div>
     </nav>
 </div>
-<router-outlet/>
+<router-outlet></router-outlet>
