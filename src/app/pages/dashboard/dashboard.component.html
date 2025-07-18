@@ -7,9 +7,9 @@
             <div class="col-md-6">
                 <div class="input-group"><select class="form-select ng-valid ng-dirty ng-touched">
                         <option value="0">Select Site</option>
-                        <option value="1">Phoenix Marketcity</option>
-                        <option value="19">string</option>
-                        <option value="20">test1</option>
+                        @for (item of siteList; track $index){
+                            <option [value]="item.siteId">{{item.siteName}}</option>
+                        }
                     </select><select class="form-select ng-valid ng-dirty ng-touched">
                         <option value="0">Select Building</option>
                         <option value="1">Phoenix-Wing A</option>

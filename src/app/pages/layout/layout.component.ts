@@ -1,4 +1,4 @@
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Component, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 
@@ -10,4 +10,10 @@ import { UserService } from '../../services/user.service';
 })
 export class LayoutComponent {
   userSrv = inject(UserService);
+  router = inject(Router)
+
+  logout(){
+    localStorage.removeItem("user");
+    this.router.navigateByUrl('/login');
+  }
 }
