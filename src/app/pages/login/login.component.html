@@ -1,1 +1,49 @@
-<p>login works!</p>
+<div class=" bg-info-subtle">
+  <div class="row justify-content-center align-items-center vh-100">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+      <div class="card login-card p-4">
+        <div class="text-center mb-4">
+          <h2 class="login-title">Welcome Back</h2>
+        </div>
+        <form>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                [(ngModel)]="loginObj.emailId"
+                required
+                placeholder="Enter your email"
+              />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                [(ngModel)]="loginObj.password"
+                required
+                placeholder="Enter your password"
+              />
+            </div>
+          </div>
+          <div class="d-grid">
+            <button type="button" (click)="onLogin()" class="btn btn-primary login-btn">Sign In</button>
+          </div>
+          <div class="text-center mt-3">
+            <a href="#" class="text-decoration-none forgot-password">Forgot Password?</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
