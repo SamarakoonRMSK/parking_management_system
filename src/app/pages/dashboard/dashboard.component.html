@@ -9,20 +9,26 @@
                 <select class="form-select ng-valid ng-dirty ng-touched" [(ngModel)]="siteId" (change)="getBuilding()">
                     <option value="0">Select Site</option>
                     @for (item of siteList; track $index){
-                    <option [value]="item.siteId">{{item.siteName}}</option>
+                    <option [value]="item.siteId">{{ item.siteName }}</option>
                     }
                 </select>
-                <select class="form-select ng-valid ng-dirty ng-touched" [(ngModel)]="buildingId" (change)="getFloors()">
+                <select class="form-select ng-valid ng-dirty ng-touched" [(ngModel)]="buildingId"
+                    (change)="getFloors()">
                     <option value="0">Select Building</option>
                     @for (building of buildingList; track $index){
-                    <option [value]="building.buildingId">{{building.buildingName}}</option>
+                    <option [value]="building.buildingId">
+                        {{ building.buildingName }}
+                    </option>
                     }
-                </select><select class="form-select ng-valid ng-touched ng-dirty" [(ngModel)]="floorId" (change)="onFloorSelect()">
+                </select><select class="form-select ng-valid ng-touched ng-dirty" [(ngModel)]="floorId"
+                    (change)="onFloorSelect()">
                     <option value="0">Select Floor</option>
                     @for (floor of floorList; track $index){
-                    <option [value]="floor.floorId">{{floor.floorNo}}</option>
+                    <option [value]="floor.floorId">{{ floor.floorNo }}</option>
                     }
-                </select><button type="button" class="btn btn-outline-primary"><i class="bi bi-search"></i></button>
+                </select><button type="button" class="btn btn-outline-primary">
+                    <i class="bi bi-search"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -35,7 +41,9 @@
                             <h6 class="text-muted">Total Spots</h6>
                             <h3 id="totalSpots" class="mb-0">50</h3>
                         </div>
-                        <div class="stat-icon bg-primary text-white"><i class="bi bi-p-square"></i></div>
+                        <div class="stat-icon bg-primary text-white">
+                            <i class="bi bi-p-square"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,7 +56,9 @@
                             <h6 class="text-muted">Available</h6>
                             <h3 id="availableSpots" class="mb-0 text-success">28</h3>
                         </div>
-                        <div class="stat-icon bg-success text-white"><i class="bi bi-check-circle"></i></div>
+                        <div class="stat-icon bg-success text-white">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -61,7 +71,9 @@
                             <h6 class="text-muted">Occupied</h6>
                             <h3 id="occupiedSpots" class="mb-0 text-danger">22</h3>
                         </div>
-                        <div class="stat-icon bg-danger text-white"><i class="bi bi-x-circle"></i></div>
+                        <div class="stat-icon bg-danger text-white">
+                            <i class="bi bi-x-circle"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,7 +86,9 @@
                             <h6 class="text-muted">Occupancy Rate</h6>
                             <h3 id="occupancyRate" class="mb-0 text-primary">44%</h3>
                         </div>
-                        <div class="stat-icon bg-info text-white"><i class="bi bi-graph-up"></i></div>
+                        <div class="stat-icon bg-info text-white">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -83,84 +97,128 @@
     <div class="card mb-4 shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0"><i class="bi bi-grid me-2"></i> Parking Layout</h5>
-            <div><button id="refreshLayout" class="btn btn-sm btn-outline-secondary me-2"><i
-                        class="bi bi-arrow-clockwise me-1"></i> Refresh </button>
-                <div class="btn-group btn-group-sm"><button data-view="grid" class="btn btn-outline-secondary active"><i
-                            class="bi bi-grid-3x3"></i></button><button data-view="list"
-                        class="btn btn-outline-secondary"><i class="bi bi-list"></i></button></div>
+            <div>
+                <button id="refreshLayout" class="btn btn-sm btn-outline-secondary me-2">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+                </button>
+                <div class="btn-group btn-group-sm">
+                    <button data-view="grid" class="btn btn-outline-secondary active">
+                        <i class="bi bi-grid-3x3"></i></button><button data-view="list"
+                        class="btn btn-outline-secondary">
+                        <i class="bi bi-list"></i>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="card-body">
-            <div class="parking-legend mb-3"><span class="legend-item"><span class="status-dot available"></span>
-                    Total (20)</span><span class="legend-item"><span class="status-dot available"></span>
-                    Available</span><span class="legend-item"><span class="status-dot occupied"></span>
-                    Occupied</span></div>
+            <div class="parking-legend mb-3">
+                <span class="legend-item"><span class="status-dot available"></span> Total ({{parkingSpotArray.length}})</span>
+                <span class="legend-item"><span class="status-dot available"></span> Available</span>
+                <span class="legend-item">
+                <span class="status-dot occupied"></span>Occupied</span>
+            </div>
             <div id="parkingLayout" class="parking-layout">
-                <!-- <div class="parking-spot occupied">
-                    <i class="bi bi-p-square"></i>
-                    <div class="spot-number">1</div>
-                    <div class="spot-status">Occupied</div>
-                    <div class="vehicle-info">wess</div>
-                </div> -->
                 @for (spot of parkingSpotArray; track $index) {
-                    <div class="parking-spot available"><i class="bi bi-car-front"></i>
-                        <div class="spot-number">{{spot}}</div>
+                <ng-container *ngIf="chechSpotBooked(spot) as bookInfo">
+                    <div class="parking-spot occupied" (click)="openReleseModel(bookInfo.parkId)">
+                        <i class="bi bi-car-front"></i>
+                        <div class="spot-number">{{ spot }}</div>
+                        <div class="spot-status">Occupied</div>
+
+                        <div *ngIf="bookInfo" class="vehicle-info">
+                            {{ bookInfo.vehicleNo }}
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!chechSpotBooked(spot) as bookInfo">
+                    <div class="parking-spot available" (click)="openModel(spot)">
+                        <i class="bi bi-car-front"></i>
+                        <div class="spot-number">{{ spot }}</div>
                         <div class="spot-status">Available</div>
                     </div>
+                </ng-container>
+
                 }
-               
             </div>
         </div>
     </div>
 </div>
-<div id="bookSpotModal" tabindex="-1" aria-hidden="true" class="modal">
+<div #bookSpot id="bookSpotModal" tabindex="-1" aria-hidden="true" class="modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-warning text-white">
-                <h5 class="modal-title"><i class="bi bi-car-front me-2"></i> Book Parking Spot </h5><button
-                    type="button" data-bs-dismiss="modal" aria-label="Close" class="btn-close btn-close-white"></button>
+                <h5 class="modal-title">
+                    <i class="bi bi-car-front me-2"></i> Book Parking Spot
+                </h5>
+                <button (click)="closeModel()" type="button" data-bs-dismiss="modal" aria-label="Close"
+                    class="btn-close btn-close-white"></button>
             </div>
             <div class="modal-body">
                 <form novalidate="" id="bookSpotForm" class="ng-untouched ng-pristine ng-invalid">
-                    <div class="mb-3"><label class="form-label">Park Spot No</label><input type="text" name="parkSpotNo"
-                            readonly="" class="form-control ng-untouched ng-pristine ng-valid">
+                    <div class="mb-3">
+                        <label class="form-label">Park Spot No</label>
+                        <input type="text" name="parkSpotNo" [(ngModel)]="bookSpotObj.parkSpotNo" readonly
+                            class="form-control ng-untouched ng-pristine ng-valid" />
                     </div>
-                    <div class="mb-3"><label for="vehicleNumber" class="form-label">Vehicle Number</label><input
-                            type="text" name="vehicleNo" id="vehicleNumber" placeholder="Enter vehicle number"
-                            required="" class="form-control ng-untouched ng-pristine ng-invalid"></div>
-                    <div class="mb-3"><label for="vehicleType" class="form-label">Amount</label><input type="number"
-                            name="amount" id="vehicleNumber" placeholder="Enter Amount " required=""
-                            class="form-control ng-untouched ng-pristine ng-valid"></div>
-                    <div class="mb-3"><label for="driverName" class="form-label">Customer Name</label><input type="text"
-                            name="custName" id="driverName" placeholder="Customer name"
-                            class="form-control ng-untouched ng-pristine ng-valid"></div>
-                    <div class="mb-3"><label for="contactNumber" class="form-label">Contact Number</label><input
-                            type="text" name="custMobileNo" id="contactNumber" placeholder="Enter contact number"
-                            class="form-control ng-untouched ng-pristine ng-valid"></div>
+                    <div class="mb-3">
+                        <label for="vehicleNumber" class="form-label">Vehicle Number</label>
+                        <input [(ngModel)]="bookSpotObj.vehicleNo" type="text" name="vehicleNo" id="vehicleNumber"
+                            placeholder="Enter vehicle number" required=""
+                            class="form-control ng-untouched ng-pristine ng-invalid" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="vehicleType" class="form-label">Amount</label>
+                        <input type="number" [(ngModel)]="bookSpotObj.amount" name="amount" id="amount"
+                            placeholder="Enter Amount " required=""
+                            class="form-control ng-untouched ng-pristine ng-valid" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="driverName" class="form-label">Customer Name</label><input type="text"
+                            [(ngModel)]="bookSpotObj.custName" name="custName" id="driverName"
+                            placeholder="Customer name" class="form-control ng-untouched ng-pristine ng-valid" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="contactNumber" class="form-label">Contact Number</label><input
+                            [(ngModel)]="bookSpotObj.custMobileNo" type="text" name="custMobileNo" id="contactNumber"
+                            placeholder="Enter contact number" class="form-control ng-untouched ng-pristine ng-valid" />
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer"><button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary">
-                    Cancel </button><button type="button" id="confirmBookBtn" class="btn btn-primary"><i
-                        class="bi bi-check2-circle me-1"></i> Confirm Booking </button></div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary" (click)="closeModel()">
+                    Cancel</button><button type="button" id="confirmBookBtn" class="btn btn-primary"
+                    (click)="onBookSpot()">
+                    <i class="bi bi-check2-circle me-1"></i> Confirm Booking
+                </button>
+            </div>
         </div>
     </div>
 </div>
-<div id="releaseSpotModal" tabindex="-1" aria-hidden="true" class="modal">
+<div #releaseSpotModal id="releaseSpotModal" tabindex="-1" aria-hidden="true" class="modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="bi bi-car-front me-2"></i> Release Parking Spot </h5><button
-                    type="button" data-bs-dismiss="modal" aria-label="Close" class="btn-close btn-close-white"></button>
+                <h5 class="modal-title">
+                    <i class="bi bi-car-front me-2"></i> Release Parking Spot
+                </h5>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"
+                    class="btn-close btn-close-white" (click)="closeReleseModel()"></button>
             </div>
             <div class="modal-body">
                 <form novalidate="" id="releaseSpotForm" class="ng-untouched ng-pristine ng-valid">
-                    <div class="mb-3"><label for="exitTime" class="form-label">Extra Amount</label><input type="text"
-                            id="exitTime" class="form-control ng-untouched ng-pristine ng-valid"></div>
+                    <div class="mb-3">
+                        <label for="exitTime" class="form-label">Extra Amount</label><input type="number" id="exitTime" name="extraCharge"
+                        [(ngModel)]="releseObj.extraCharge"
+                            class="form-control ng-untouched ng-pristine ng-valid" />
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer"><button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary">
-                    Cancel </button><button type="button" id="confirmReleaseBtn" class="btn btn-success"><i
-                        class="bi bi-check2-circle me-1"></i> Confirm Release </button></div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary" (click)="closeReleseModel()">
+                    Cancel</button><button type="button" id="confirmReleaseBtn" class="btn btn-success" (click)="onReleseSpot()">
+                    <i class="bi bi-check2-circle me-1"></i> Confirm Release
+                </button>
+            </div>
         </div>
     </div>
 </div>

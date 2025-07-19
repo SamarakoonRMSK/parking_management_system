@@ -53,3 +53,25 @@ export interface IFloor {
   isOperational: boolean
   totalParkingSpots: number
 }
+
+export class Parking {
+  parkId: number = 0
+  floorId: number= 0
+  custName: string =''
+  custMobileNo: string =''
+  vehicleNo: string =''
+  parkDate!: Date 
+  parkSpotNo: number =0
+  inTime!: Date;
+  outTime!: null
+  amount: number =0
+  extraCharge: number =0
+  parkingNo: string =''
+}
+
+
+export interface IRelese {
+  parkId: number
+  outTime: Date
+  extraCharge: number
+}

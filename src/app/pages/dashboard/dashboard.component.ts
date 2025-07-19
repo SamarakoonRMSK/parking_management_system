@@ -1,11 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { MasterService } from '../../services/master.service';
-import { IBuilding, IFloor, ISite, ResponseModel } from '../../model/user.model';
+import { IBuilding, IFloor, IRelese, ISite, Parking, ResponseModel } from '../../model/user.model';
 import { FormsModule } from '@angular/forms';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [FormsModule],
+  imports: [FormsModule, NgIf],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -19,9 +20,56 @@ export class DashboardComponent implements OnInit{
   buildingId:number = 0;
   floorId:number = 0;
   parkingSpotArray:number[] = []
+  bookedSpotList :any[] = []
+  bookSpotObj:Parking= new Parking()
+  releseObj: IRelese = {
+    parkId: 0,
+    outTime: new Date(),
+    extraCharge: 0
+  }
+
+  @ViewChild("bookSpot") bookModel!: ElementRef;
+  @ViewChild("releaseSpotModal") bookReleaseModel!: ElementRef   
 
   ngOnInit(): void {
     this.getSites();
+  }
+
+  openModel(spotNo:number){
+    this.bookSpotObj = {
+    parkId: 0,
+    floorId: this.floorId,
+    custName: '',
+    custMobileNo: '',
+    vehicleNo: '',
+    parkDate: new Date(),
+    parkSpotNo: spotNo,
+    inTime: new Date(),
+    outTime: null,
+    amount: 0,
+    extraCharge: 0,
+    parkingNo: ''
+  }
+    if(this.bookModel){
+      this.bookModel.nativeElement.style.display = 'block'
+    }
+  }
+  openReleseModel(spotNo:number){
+    this.releseObj.parkId = spotNo;
+    if(this.bookReleaseModel){
+      this.bookReleaseModel.nativeElement.style.display = 'block'
+    }
+  }
+  closeReleseModel(){
+    if(this.bookReleaseModel){
+      this.bookReleaseModel.nativeElement.style.display = ''
+    }
+  }
+
+  closeModel(){
+    if(this.bookModel){
+      this.bookModel.nativeElement.style.display = ''
+    }
   }
 
   getSites(){
@@ -36,6 +84,8 @@ export class DashboardComponent implements OnInit{
   }
 
   getBuilding(){
+    this.parkingSpotArray = [];
+    this.floorList = [];
     this.masterSrv.getBuildingBySiteId(this.siteId).subscribe({
       next:(res)=>{
         this.buildingList = res.data;
@@ -47,6 +97,8 @@ export class DashboardComponent implements OnInit{
     })
   }
   getFloors(){
+    this.parkingSpotArray = [];
+    this.floorList = [];
     this.masterSrv.getFloorsByBuildingId(this.buildingId).subscribe({
       next:(res)=>{
         this.floorList = res.data;
@@ -59,6 +111,8 @@ export class DashboardComponent implements OnInit{
   }
 
   onFloorSelect(){
+    this.parkingSpotArray = [];
+    this.bookedSpotList = []
     const floor = this.floorList.find((m: IFloor) => m.floorId == this.floorId);
     if (!floor) {
       console.warn('Selected floor not found.');
@@ -66,6 +120,50 @@ export class DashboardComponent implements OnInit{
     }
     for (let index = 1; index <= floor.totalParkingSpots; index++) {
       this.parkingSpotArray.push(index);
+    }
+    this.getBooking();
+    
+  }
+
+  getBooking(){
+    this.masterSrv.getALLParkingByFloor(this.floorId).subscribe({
+      next:(res)=>{
+        this.bookedSpotList = res.data;
+      }
+    })
+  }
+
+
+  onBookSpot(){
+    this.masterSrv.bookSpot(this.bookSpotObj).subscribe({
+      next:(res)=>{
+        alert("Spot booked");
+        this.getBooking();
+      },
+      error:(error)=>{
+        console.log(error);
+        
+      }
+    })
+  }
+
+  onReleseSpot(){
+    this.masterSrv.releseSpot(this.releseObj).subscribe({
+      next:(res)=>{
+        alert("spot relesed");
+        this.getBooking();
+      }
+    })
+  }
+
+  chechSpotBooked(spotNo:number){
+    const isExist = this.bookedSpotList.find(m=>m.parkSpotNo == spotNo && m.outTime == null );
+    console.log(isExist);
+    
+    if(isExist != undefined){
+      return isExist;
+    }else{
+      return isExist;
     }
   }
 

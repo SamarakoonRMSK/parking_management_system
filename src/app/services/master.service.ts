@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ResponseModel } from '../model/user.model';
+import { IRelese, Parking, ResponseModel } from '../model/user.model';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -23,5 +23,17 @@ export class MasterService {
   
   getFloorsByBuildingId(buildingId:number):Observable<ResponseModel>{
     return this.http.get<ResponseModel>(`https://api.freeprojectapi.com/api/SmartParking/GetFloorsByBuildingId?id=${buildingId}`);
+  }
+
+  bookSpot(obj:Parking):Observable<ResponseModel>{
+    return this.http.post<ResponseModel>("https://api.freeprojectapi.com/api/SmartParking/AddParking",obj);
+  }
+
+  getALLParkingByFloor(floorId:number):Observable<ResponseModel>{
+    return this.http.get<ResponseModel>("https://api.freeprojectapi.com/api/SmartParking/GetAllParkingByFloor?id="+floorId);
+  }
+
+  releseSpot(obj:IRelese):Observable<ResponseModel>{
+    return this.http.post<ResponseModel>("https://api.freeprojectapi.com/api/SmartParking/MarExit",obj);
   }
 }
