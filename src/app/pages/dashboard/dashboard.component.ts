@@ -27,6 +27,8 @@ export class DashboardComponent implements OnInit{
     outTime: new Date(),
     extraCharge: 0
   }
+  available:number=0;
+  occupied:number=0;
 
   @ViewChild("bookSpot") bookModel!: ElementRef;
   @ViewChild("releaseSpotModal") bookReleaseModel!: ElementRef   
@@ -129,6 +131,15 @@ export class DashboardComponent implements OnInit{
     this.masterSrv.getALLParkingByFloor(this.floorId).subscribe({
       next:(res)=>{
         this.bookedSpotList = res.data;
+        // this.occupied = )
+        for (let index = 1; index <= this.parkingSpotArray.length; index++) {
+          const isExist = res.data.find((m: { parkSpotNo: number; outTime: null; })=>m.parkSpotNo == index && m.outTime == null );
+          if(isExist != undefined){
+            this.occupied+=1
+          }
+          
+        }
+        this.available = this.parkingSpotArray.length - this.occupied;
       }
     })
   }

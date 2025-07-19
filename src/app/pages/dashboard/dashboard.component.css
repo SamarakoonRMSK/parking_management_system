@@ -10,6 +10,9 @@
 .status-dot.available {
     background-color: green;
 }
+.status-dot.occupied {
+    background-color: red;
+}
 
 .legend-item {
     display: flex;

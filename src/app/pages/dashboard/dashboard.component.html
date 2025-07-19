@@ -113,14 +113,14 @@
         <div class="card-body">
             <div class="parking-legend mb-3">
                 <span class="legend-item"><span class="status-dot available"></span> Total ({{parkingSpotArray.length}})</span>
-                <span class="legend-item"><span class="status-dot available"></span> Available</span>
+                <span class="legend-item"><span class="status-dot available"></span> Available ({{available}})</span>
                 <span class="legend-item">
-                <span class="status-dot occupied"></span>Occupied</span>
+                <span class="status-dot occupied"></span>Occupied ({{occupied}})</span>
             </div>
             <div id="parkingLayout" class="parking-layout">
                 @for (spot of parkingSpotArray; track $index) {
                 <ng-container *ngIf="chechSpotBooked(spot) as bookInfo">
-                    <div class="parking-spot occupied" (click)="openReleseModel(bookInfo.parkId)">
+                    <div class="parking-spot occupied" (click)="openReleseModel(bookInfo.parkId)" >
                         <i class="bi bi-car-front"></i>
                         <div class="spot-number">{{ spot }}</div>
                         <div class="spot-status">Occupied</div>
