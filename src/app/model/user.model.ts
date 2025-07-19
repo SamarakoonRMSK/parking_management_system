@@ -36,3 +36,20 @@ export interface ISite {
       totalBuildings: number;
       createdDate: string;
     }
+
+export interface IBuilding {
+  buildingId: number
+  siteId: number
+  buildingName: string
+  buildingManagerName: string
+  contactNo: string
+  siteName: string
+}
+
+export interface IFloor {
+  floorId: number
+  buildingId: number
+  floorNo: string
+  isOperational: boolean
+  totalParkingSpots: number
+}

@@ -16,4 +16,12 @@ export class MasterService {
      const clientId: number = this.userSrv.loggedUserData.extraId;
     return this.http.get<ResponseModel>("https://api.freeprojectapi.com/api/SmartParking/GetSitesByClientId?id=2");
   }
+
+  getBuildingBySiteId(siteId:number):Observable<ResponseModel>{
+    return this.http.get<ResponseModel>(`https://api.freeprojectapi.com/api/SmartParking/GetBuildingBySiteId?id=${siteId}`);
+  }
+  
+  getFloorsByBuildingId(buildingId:number):Observable<ResponseModel>{
+    return this.http.get<ResponseModel>(`https://api.freeprojectapi.com/api/SmartParking/GetFloorsByBuildingId?id=${buildingId}`);
+  }
 }
